@@ -2,11 +2,11 @@
   "name": "ts-docgen",
   "version": "1.0.0",
   "description": "A TypeScript-enabled discordjs docs generator",
-  "main": "lib/index.js",
-  "types": "lib/index.d.ts",
+  "main": "lib/src/index.js",
+  "types": "lib/src/index.d.ts",
   "scripts": {
     "build": "tsc",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "npm run build && node lib/src/index.js --existingOutput examples/typedoc-out.json --output test-output.json"
   },
   "husky": {
     "hooks": {

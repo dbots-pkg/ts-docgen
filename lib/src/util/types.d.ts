@@ -35,4 +35,5 @@ export declare const typeUtil: {
 export declare function parseTypeSimple(t: JSONOutput.SomeType): string;
 export declare type docType = string[][] | string[][][];
 export declare function parseType(t: SomeType): string[][][];
+export declare function assert<T>(val: any): asserts val is T;
 export {};

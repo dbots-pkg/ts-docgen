@@ -12,8 +12,13 @@ const options = yargs
   .option('source', {
     type: 'array',
     alias: ['s', 'i'],
-    describe: 'Source directories to parse JSDocs in',
-    demand: true,
+    describe: 'Source directories to parse TypeDoc in',
+    normalize: true
+  })
+  .option('existingOutput', {
+    type: 'string',
+    alias: 'eo',
+    describe: 'Path ot an existing TypeDoc JSON output file',
     normalize: true
   })
   .option('custom', {
@@ -40,12 +45,6 @@ const options = yargs
     alias: 'S',
     describe: 'Number of spaces to use in output JSON',
     default: 0
-  })
-  .option('jsdoc', {
-    type: 'string',
-    alias: 'j',
-    describe: 'Path to JSDoc config file',
-    normalize: true
   })
   .option('verbose', {
     type: 'boolean',
@@ -81,5 +80,8 @@ const options = yargs
   .completion('completion')
   .wrap(yargs.terminalWidth())
   .argv
+
+if ((!options.source || options.source.length < 1) === !options.existingOutput)
+  throw new Error('You need to use either --source or --existingOutput')
 
 export default options

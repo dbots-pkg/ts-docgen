@@ -12,23 +12,30 @@ export type ProjectData = JSONOutput.ProjectReflection
 
 const mainPromises = []
 
-console.log('Parsing using TypeDoc...')
-const files: string[] = []
-for (const dir of config.source) files.push(`${dir}/*.ts`, `${dir}/**/*.ts`)
-mainPromises[0] = new Promise((res, rej) => {
-  const app = new TypeDoc(),
-    tempDir = tmp.dirSync(),
-    filePath = path.join(tempDir.name, 'project-reflection.json')
+if (config.existingOutput) {
+  console.log('Parsing using existing output file...')
+  mainPromises[0] = readFile(config.existingOutput, 'utf-8').then(JSON.parse)
+}
+else if (config.source) {
+  console.log('Parsing using TypeDoc...')
+  const files: string[] = []
 
-  const writeResult = app.generateJson(files, filePath)
+  for (const dir of config.source) files.push(`${dir}/*.ts`, `${dir}/**/*.ts`)
+  mainPromises[0] = new Promise((res, rej) => {
+    const app = new TypeDoc(),
+      tempDir = tmp.dirSync(),
+      filePath = path.join(tempDir.name, 'project-reflection.json')
 
-  if (!writeResult) rej('Couldn\'t write temp file.')
-  else {
-    const data = require(filePath) as ProjectData
-    if (typeof data == 'object') res(data)
-    else rej('Couldn\'t access temp file.')
-  }
-})
+    const writeResult = app.generateJson(files, filePath)
+
+    if (!writeResult) rej('Couldn\'t write temp file.')
+    else {
+      const data = require(filePath) as ProjectData
+      if (typeof data == 'object') res(data)
+      else rej('Couldn\'t access temp file.')
+    }
+  })
+}
 
 // I'm using an interface only because otherwise it messe up my syntax highlighter
 export interface customSettings extends Record<string, {

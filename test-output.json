@@ -1,0 +1,421 @@
+{
+  "meta": {
+    "version": "1.0.0",
+    "format": 20,
+    "date": 1605300338193
+  },
+  "classes": [
+    {
+      "name": "MainClass",
+      "description": "Your very own class",
+      "see": [
+        "lol",
+        "asda\n"
+      ],
+      "construct": {
+        "name": "constructor",
+        "params": [
+          {
+            "name": "first",
+            "description": "lol",
+            "type": [
+              [
+                [
+                  "hey"
+                ]
+              ]
+            ]
+          },
+          {
+            "name": "options",
+            "description": "lamo\n",
+            "type": [
+              [
+                [
+                  "classOptions"
+                ]
+              ]
+            ]
+          }
+        ],
+        "returns": [
+          [
+            [
+              "MainClass"
+            ]
+          ]
+        ],
+        "meta": {
+          "line": 47,
+          "file": "index.ts",
+          "path": "."
+        }
+      },
+      "props": [
+        {
+          "name": "first",
+          "description": "blablabla",
+          "type": [
+            [
+              [
+                "hey"
+              ]
+            ]
+          ],
+          "meta": {
+            "line": 45,
+            "file": "index.ts",
+            "path": "."
+          }
+        },
+        {
+          "name": "options",
+          "description": "some options",
+          "type": [
+            [
+              [
+                "classOptions"
+              ]
+            ]
+          ],
+          "meta": {
+            "line": 47,
+            "file": "index.ts",
+            "path": "."
+          }
+        }
+      ],
+      "methods": [
+        {
+          "name": "otherMethod",
+          "description": "nice",
+          "see": [],
+          "scope": "static",
+          "examples": [],
+          "emits": [
+            "MainClass#customEvent"
+          ],
+          "params": [
+            {
+              "name": "param",
+              "type": [
+                [
+                  [
+                    "classOptions"
+                  ]
+                ]
+              ]
+            }
+          ],
+          "returns": [
+            [
+              [
+                "Record",
+                "<"
+              ],
+              [
+                "string",
+                ", "
+              ],
+              [
+                "number",
+                ">"
+              ]
+            ]
+          ],
+          "returnsDescription": "nothing\n",
+          "meta": {
+            "line": 66,
+            "file": "index.ts",
+            "path": "."
+          }
+        }
+      ],
+      "events": [
+        {
+          "name": "customEvent",
+          "description": "We're emitting something\nMultiline",
+          "see": [],
+          "examples": [],
+          "emits": [],
+          "params": [
+            {
+              "name": "firstParam",
+              "type": [
+                [
+                  [
+                    "string"
+                  ]
+                ]
+              ]
+            },
+            {
+              "name": "secondParam",
+              "optional": true,
+              "type": [
+                [
+                  [
+                    "undefined",
+                    " | "
+                  ],
+                  [
+                    "false",
+                    " | "
+                  ]
+                ]
+              ]
+            }
+          ],
+          "returns": [
+            [
+              [
+                "void"
+              ]
+            ]
+          ],
+          "meta": {
+            "line": 36,
+            "file": "index.ts",
+            "path": "."
+          }
+        }
+      ],
+      "meta": {
+        "line": 43,
+        "file": "index.ts",
+        "path": "."
+      }
+    },
+    {
+      "name": "SomeClass",
+      "description": "itneresting class",
+      "access": "private",
+      "construct": {
+        "name": "constructor",
+        "description": "hey",
+        "see": [],
+        "access": "private",
+        "examples": [],
+        "abstract": true,
+        "deprecated": true,
+        "emits": [],
+        "params": [
+          {
+            "name": "a",
+            "type": [
+              [
+                [
+                  "string"
+                ]
+              ]
+            ]
+          },
+          {
+            "name": "b",
+            "type": [
+              [
+                [
+                  "number"
+                ]
+              ]
+            ]
+          }
+        ],
+        "returns": [
+          [
+            [
+              "SomeClass"
+            ]
+          ]
+        ],
+        "meta": {
+          "line": 3,
+          "file": "other.ts",
+          "path": "."
+        }
+      },
+      "meta": {
+        "line": 3,
+        "file": "other.ts",
+        "path": "."
+      }
+    },
+    {
+      "name": "extension",
+      "description": "An extension",
+      "extends": [
+        "SomeClass"
+      ],
+      "construct": {
+        "name": "constructor",
+        "description": "hey",
+        "see": [],
+        "access": "private",
+        "examples": [],
+        "abstract": true,
+        "deprecated": true,
+        "emits": [],
+        "params": [
+          {
+            "name": "a",
+            "type": [
+              [
+                [
+                  "string"
+                ]
+              ]
+            ]
+          },
+          {
+            "name": "b",
+            "type": [
+              [
+                [
+                  "number"
+                ]
+              ]
+            ]
+          }
+        ],
+        "returns": [
+          [
+            [
+              "extension"
+            ]
+          ]
+        ],
+        "meta": {
+          "line": 3,
+          "file": "other.ts",
+          "path": "."
+        }
+      },
+      "meta": {
+        "line": 15,
+        "file": "other.ts",
+        "path": "."
+      }
+    },
+    {
+      "name": "implementation",
+      "description": "An implementation",
+      "implements": [
+        "SomeClass"
+      ],
+      "construct": {
+        "name": "constructor",
+        "returns": [
+          [
+            [
+              "implementation"
+            ]
+          ]
+        ],
+        "meta": {
+          "line": 18,
+          "file": "other.ts",
+          "path": "."
+        }
+      },
+      "meta": {
+        "line": 18,
+        "file": "other.ts",
+        "path": "."
+      }
+    },
+    {
+      "name": "testClass",
+      "description": "CLass with a path",
+      "construct": {
+        "name": "constructor",
+        "returns": [
+          [
+            [
+              "testClass"
+            ]
+          ]
+        ],
+        "meta": {
+          "line": 2,
+          "file": "file.ts",
+          "path": "sub/path"
+        }
+      },
+      "meta": {
+        "line": 2,
+        "file": "file.ts",
+        "path": "sub/path"
+      }
+    }
+  ],
+  "typedefs": [
+    {
+      "name": "classOptions",
+      "description": "This is an interface"
+    },
+    {
+      "name": "hey",
+      "description": "This is a type",
+      "type": [
+        [
+          [
+            "lol",
+            " | "
+          ]
+        ]
+      ]
+    },
+    {
+      "name": "otherType",
+      "description": "This is another type",
+      "type": [
+        [
+          [
+            "{",
+            "\n"
+          ],
+          [
+            "bool",
+            ": "
+          ],
+          [
+            "boolean",
+            ",\n"
+          ],
+          [
+            "str",
+            ": "
+          ],
+          [
+            "string",
+            "\n}"
+          ]
+        ]
+      ],
+      "props": [
+        {
+          "name": "bool",
+          "description": "happy boolean",
+          "type": [
+            [
+              [
+                "boolean"
+              ]
+            ]
+          ]
+        },
+        {
+          "name": "str",
+          "description": "this is a string",
+          "type": [
+            [
+              [
+                "string"
+              ]
+            ]
+          ]
+        }
+      ]
+    }
+  ]
+}

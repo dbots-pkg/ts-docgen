@@ -69,6 +69,8 @@ export const typeUtil = {
 // #endregion
 
 export function parseTypeSimple(t: JSONOutput.SomeType): string {
+  const parseType = parseTypeSimple
+
   if (isArrayType(t)) {
     return `Array<${parseType(t.elementType)}>`
   }
@@ -100,7 +102,7 @@ export function parseTypeSimple(t: JSONOutput.SomeType): string {
         if (type)
           obj[child.name] = parseType(type)
       }
-      return `{\n${Object.entries(obj).map(([key, value]) => `${key}: ${value}\n`)}}`
+      return `{\n${Object.entries(obj).map(([key, value]) => `${key}: ${value}`).join(',\n')}\n}`
     }
 
     // This is run if we're parsing a function type
@@ -122,7 +124,10 @@ export function parseTypeSimple(t: JSONOutput.SomeType): string {
     return `${t.operator} ${parseType(t.target)}`
   }
   if (isUnionType(t)) {
-    return t.types.map(parseType).join(' | ')
+    return t.types
+      .map(parseType)
+      .filter(s => !!s && s.trim().length > 0)
+      .join(' | ')
   }
   if (isInferredType(t) || isIntrinsicType(t) || isTypeParameterType(t) || isUnknownType(t)) {
     return t.name
@@ -134,15 +139,15 @@ export function parseTypeSimple(t: JSONOutput.SomeType): string {
 const splitVarName = (str: string) => {
   if (str === '*') return ['*']
   str = str.replace(/\./g, '')
-  const matches = str.match(/([\w*]+)([^\w*]+)/g)
+  const matches = str.match(/([\w*{}]+)([^\w*]+)/g)
   const output = []
   if (matches) {
     for (const match of matches) {
-      const groups = match.match(/([\w*]+)([^\w*]+)/)
+      const groups = match.match(/([\w*{}]+)([^\w*]+)/)
       groups && output.push([groups[1], groups[2]])
     }
   } else {
-    output.push([(str.match(/([\w*]+)/g) || [])[0]])
+    output.push([(str.match(/([\w*{}]+)/g) || [])[0]])
   }
   return output
 }
@@ -151,3 +156,5 @@ export type docType = string[][] | string[][][]
 export function parseType(t: SomeType) {
   return [splitVarName(parseTypeSimple(t)) as string[][]]
 }
+
+export declare function assert<T>(val: any): asserts val is T

@@ -114,7 +114,7 @@ function parseClassMethod(element: DeclarationReflection): classMethodDoc {
     examples: signature.comment?.tags?.filter(t => t.tag == 'example').map(t => t.text),
     abstract: signature.comment?.tags?.some(t => t.tag == 'abstract') || undefined,
     deprecated: signature.comment?.tags?.some(t => t.tag == 'deprecated') || undefined,
-    emits: signature.comment?.tags?.filter(t => t.tag == 'emits').map(t => t.text.replace(/#/, '#e-')),
+    emits: signature.comment?.tags?.filter(t => t.tag == 'emits').map(t => t.text),
     params: signature.parameters ? signature.parameters.map(parseParam) : undefined,
     returns: signature.type ? parseType(signature.type) : undefined,
     returnsDescription: signature.comment?.returns,

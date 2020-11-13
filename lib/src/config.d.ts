@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 declare const options: {
     [x: string]: unknown;
-    source: string[];
+    source: string[] | undefined;
+    existingOutput: string | undefined;
     custom: string | undefined;
     root: string;
     output: string | undefined;
     spaces: number;
-    jsdoc: string | undefined;
     verbose: boolean;
     config: string | undefined;
     _: string[];

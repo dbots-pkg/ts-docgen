@@ -115,7 +115,7 @@ export function parseTypeSimple(t: JSONOutput.SomeType): string {
     return '{}'
   }
   if (isStringLiteralType(t)) {
-    return t.value
+    return `'${t.value}'`
   }
   if (isTupleType(t)) {
     return `[${(t.elements || []).map(parseType).join(', ')}]`

@@ -138,6 +138,8 @@ export function parseTypeSimple(t: JSONOutput.SomeType): string {
 
 const splitVarName = (str: string) => {
   if (str === '*') return ['*']
+  if (str.includes(' | ')) return [[str]]
+
   str = str.replace(/\./g, '')
   const matches = str.match(/([\w*{}]+)([^\w*]+)/g)
   const output = []

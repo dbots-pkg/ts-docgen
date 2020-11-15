@@ -136,13 +136,13 @@ export function parseTypeSimple(t: JSONOutput.SomeType): string {
   return 'unknown'
 }
 
-const splitVarName = (str: string) => {
+const splitVarName = (str: string): string[] | string[][] => {
   if (str === '*') return ['*']
   if (str.includes(' | ')) return [[str]]
 
   str = str.replace(/\./g, '')
   const matches = str.match(/([\w*{}]+)([^\w*]+)/g)
-  const output = []
+  let output = []
   if (matches) {
     for (const match of matches) {
       const groups = match.match(/([\w*{}]+)([^\w*]+)/)
@@ -151,6 +151,8 @@ const splitVarName = (str: string) => {
   } else {
     output.push([(str.match(/([\w*{}]+)/g) || [])[0]])
   }
+
+  if (str.includes('=>')) output = [['('], ...output, ...splitVarName(str.split('=>')[1])] as string[][]
   return output
 }
 

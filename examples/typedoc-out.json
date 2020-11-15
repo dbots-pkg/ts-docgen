@@ -13,7 +13,7 @@
 			"flags": {
 				"isExported": true
 			},
-			"originalName": "C:/Users/customPath/temp-typedoc/src/index.ts",
+			"originalName": "C:/Users/fgran/Desktop/temp-typedoc/src/index.ts",
 			"children": [
 				{
 					"id": 20,
@@ -102,7 +102,7 @@
 							"sources": [
 								{
 									"fileName": "index.ts",
-									"line": 47,
+									"line": 51,
 									"character": 23
 								}
 							]
@@ -188,6 +188,7 @@
 							"kind": 1024,
 							"kindString": "Property",
 							"flags": {
+								"isPrivate": true,
 								"isExported": true
 							},
 							"comment": {
@@ -196,7 +197,7 @@
 							"sources": [
 								{
 									"fileName": "index.ts",
-									"line": 45,
+									"line": 47,
 									"character": 7
 								}
 							],
@@ -215,12 +216,18 @@
 								"isExported": true
 							},
 							"comment": {
-								"shortText": "some options"
+								"shortText": "some options",
+								"tags": [
+									{
+										"tag": "readonly",
+										"text": "\n"
+									}
+								]
 							},
 							"sources": [
 								{
 									"fileName": "index.ts",
-									"line": 47,
+									"line": 51,
 									"character": 9
 								}
 							],
@@ -296,7 +303,7 @@
 							"sources": [
 								{
 									"fileName": "index.ts",
-									"line": 66,
+									"line": 70,
 									"character": 20
 								}
 							]
@@ -749,7 +756,7 @@
 					"sources": [
 						{
 							"fileName": "index.ts",
-							"line": 72,
+							"line": 76,
 							"character": 16
 						}
 					]
@@ -802,7 +809,7 @@
 			"flags": {
 				"isExported": true
 			},
-			"originalName": "C:/Users/customPath/temp-typedoc/src/other.ts",
+			"originalName": "C:/Users/fgran/Desktop/temp-typedoc/src/other.ts",
 			"children": [
 				{
 					"id": 42,
@@ -1155,7 +1162,7 @@
 			"flags": {
 				"isExported": true
 			},
-			"originalName": "C:/Users/customPath/temp-typedoc/src/sub/path/file.ts",
+			"originalName": "C:/Users/fgran/Desktop/temp-typedoc/src/sub/path/file.ts",
 			"children": [
 				{
 					"id": 2,
@@ -1245,7 +1252,7 @@
 			"flags": {
 				"isExported": true
 			},
-			"originalName": "C:/Users/customPath/temp-typedoc/src/test.ts",
+			"originalName": "C:/Users/fgran/Desktop/temp-typedoc/src/test.ts",
 			"children": [
 				{
 					"id": 56,

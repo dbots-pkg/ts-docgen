@@ -2,7 +2,7 @@
   "meta": {
     "version": "1.0.0",
     "format": 20,
-    "date": 1605300338193
+    "date": 1605443847558
   },
   "classes": [
     {
@@ -46,7 +46,7 @@
           ]
         ],
         "meta": {
-          "line": 47,
+          "line": 51,
           "file": "index.ts",
           "path": "."
         }
@@ -55,6 +55,7 @@
         {
           "name": "first",
           "description": "blablabla",
+          "access": "private",
           "type": [
             [
               [
@@ -63,7 +64,7 @@
             ]
           ],
           "meta": {
-            "line": 45,
+            "line": 47,
             "file": "index.ts",
             "path": "."
           }
@@ -71,6 +72,7 @@
         {
           "name": "options",
           "description": "some options",
+          "see": [],
           "type": [
             [
               [
@@ -79,7 +81,7 @@
             ]
           ],
           "meta": {
-            "line": 47,
+            "line": 51,
             "file": "index.ts",
             "path": "."
           }
@@ -125,7 +127,7 @@
           ],
           "returnsDescription": "nothing\n",
           "meta": {
-            "line": 66,
+            "line": 70,
             "file": "index.ts",
             "path": "."
           }
@@ -155,12 +157,7 @@
               "type": [
                 [
                   [
-                    "undefined",
-                    " | "
-                  ],
-                  [
-                    "false",
-                    " | "
+                    "undefined | false | true"
                   ]
                 ]
               ]
@@ -351,7 +348,90 @@
   "typedefs": [
     {
       "name": "classOptions",
-      "description": "This is an interface"
+      "description": "This is an interface",
+      "props": [
+        {
+          "name": "lol",
+          "type": [
+            [
+              [
+                "("
+              ],
+              [
+                "i",
+                ": "
+              ],
+              [
+                "number",
+                ", "
+              ],
+              [
+                "s",
+                ": "
+              ],
+              [
+                "string",
+                ") => "
+              ],
+              [
+                "void"
+              ]
+            ]
+          ]
+        },
+        {
+          "name": "some",
+          "description": "interface prop",
+          "type": [
+            [
+              [
+                "number"
+              ]
+            ]
+          ]
+        },
+        {
+          "name": "stuff",
+          "description": "other prop",
+          "optional": true,
+          "type": [
+            [
+              [
+                "undefined | {\nprop: boolean\n}"
+              ]
+            ]
+          ]
+        },
+        {
+          "name": "secondLol",
+          "type": [
+            [
+              [
+                "("
+              ],
+              [
+                "first",
+                ": "
+              ],
+              [
+                "boolean",
+                ", "
+              ],
+              [
+                "second",
+                ": "
+              ],
+              [
+                "any",
+                ") => "
+              ],
+              [
+                "void"
+              ]
+            ]
+          ]
+        }
+      ]
     },
     {
       "name": "hey",
@@ -359,8 +439,7 @@
       "type": [
         [
           [
-            "lol",
-            " | "
+            "'lol' | true"
           ]
         ]
       ]

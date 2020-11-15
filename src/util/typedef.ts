@@ -1,5 +1,5 @@
 import { DeclarationReflection } from '../documentation'
-import { classMethodParamDoc, parseClassMethod } from './class'
+import { classMethodParamDoc } from './class'
 import { docType, parseType, typeUtil } from './types'
 
 export interface typedefDoc {

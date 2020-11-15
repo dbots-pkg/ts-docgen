@@ -102,7 +102,7 @@ interface classMethodDoc {
   returnsDescription?: string
   meta?: docMeta
 }
-function parseClassMethod(element: DeclarationReflection): classMethodDoc {
+export function parseClassMethod(element: DeclarationReflection): classMethodDoc {
   const signature = ((element.signatures || [])[0] || element) as DeclarationReflection
 
   return {

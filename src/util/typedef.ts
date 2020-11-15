@@ -1,5 +1,5 @@
 import { DeclarationReflection } from '../documentation'
-import { classMethodParamDoc } from './class'
+import { classMethodParamDoc, parseClassMethod } from './class'
 import { docType, parseType, typeUtil } from './types'
 
 export interface typedefDoc {
@@ -42,7 +42,14 @@ export function parseTypedef(element: DeclarationReflection): typedefDoc {
           description: child.comment?.shortText || (child.signatures || [])[0]?.comment?.shortText,
           optional: child.flags.isOptional || undefined,
           default: child.defaultValue,
-          type: child.type ? parseType(child.type) : undefined
+          type: child.type
+            ? parseType(child.type)
+            : child.kindString == 'Method'
+              ? parseType({
+                type: 'reflection',
+                declaration: child
+              })
+              : undefined
         }))
 
       return {

@@ -60,6 +60,7 @@ interface classMethodDoc {
     returnsDescription?: string;
     meta?: docMeta;
 }
+export declare function parseClassMethod(element: DeclarationReflection): classMethodDoc;
 export declare type classMethodParamDoc = Exclude<classMethodDoc['params'], undefined>[number];
 export declare function parseParam(param: DeclarationReflection): classMethodParamDoc;
 interface classEventDoc {

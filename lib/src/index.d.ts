@@ -10,3 +10,23 @@ export interface customSettings extends Record<string, {
     } | null>;
 }> {
 }
+interface Config {
+    /** Source directories to parse TypeDoc in */
+    source?: string[];
+    /** Path ot an existing TypeDoc JSON output file */
+    existingOutput?: string;
+    /** Custom docs definition file to use */
+    custom?: string;
+    /** Root directory of the project */
+    root?: string;
+    /** Path to output file */
+    output?: string;
+    /** Number of spaces to use in output JSON */
+    spaces?: number;
+    /** Logs extra information to the console */
+    verbose?: boolean;
+    /** Path to JSON/YAML config file */
+    config?: string;
+}
+export declare function runGenerator(config: Config): void;
+export {};

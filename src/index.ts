@@ -58,7 +58,8 @@ export function runGenerator(config: Config) {
   }
   else if (config.source) {
     console.log('Parsing using TypeDoc...')
-    const files: string[] = ['C:/GitHub/dbots.js/src/index.ts']
+    // I'm ashamed of this implementation, but it works.
+    const files: string[] = config.source
 
     // for (const dir of config.source) files.push(`${dir}/*/*.ts`, `${dir}/**/*.ts*/`)
     mainPromises[0] = new Promise((res, rej) => {

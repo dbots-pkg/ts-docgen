@@ -4,6 +4,9 @@
   "description": "A TypeScript-enabled discordjs docs generator",
   "main": "lib/src/index.js",
   "types": "lib/src/index.d.ts",
+  "bin": {
+    "docgen": "lib/src/index.js"
+  },
   "scripts": {
     "build": "tsc",
     "test": "npm run build && node lib/src/index.js --existingOutput examples/typedoc-out.json --output test-output.json"

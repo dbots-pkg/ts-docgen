@@ -79,7 +79,7 @@ export function runGenerator(config: Config) {
         experimentalDecorators: true
       })
 
-      const project = app.convert(app.expandInputFiles(['src']))
+      const project = app.convert(app.expandInputFiles(files))
 
       const writeResult = project && app.generateJson(files, filePath)
 

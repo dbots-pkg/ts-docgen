@@ -1,9 +1,11 @@
-import { Application as TypeDoc, JSONOutput } from 'typedoc'
+import * as TypeDoc from 'typedoc'
+import { JSONOutput } from 'typedoc'
 import tmp from 'tmp'
 import path from 'path'
 import fs from 'fs'
 import util from 'util'
 import { FORMAT_VERSION, generateDocs, generateFinalOutput } from './documentation'
+import { ModuleKind, ScriptTarget } from 'typescript'
 const readFile = util.promisify(fs.readFile)
 
 export type ProjectData = JSONOutput.ProjectReflection
@@ -56,15 +58,29 @@ export function runGenerator(config: Config) {
   }
   else if (config.source) {
     console.log('Parsing using TypeDoc...')
-    const files: string[] = []
+    const files: string[] = ['C:/GitHub/dbots.js/src/index.ts']
 
-    for (const dir of config.source) files.push(`${dir}/*.ts`, `${dir}/**/*.ts`)
+    // for (const dir of config.source) files.push(`${dir}/*/*.ts`, `${dir}/**/*.ts*/`)
     mainPromises[0] = new Promise((res, rej) => {
-      const app = new TypeDoc(),
+      const app = new TypeDoc.Application(),
         tempDir = tmp.dirSync(),
         filePath = path.join(tempDir.name, 'project-reflection.json')
 
-      const writeResult = app.generateJson(files, filePath)
+      // If you want TypeDoc to load tsconfig.json / typedoc.json files
+      app.options.addReader(new TypeDoc.TSConfigReader())
+      app.options.addReader(new TypeDoc.TypeDocReader())
+
+      app.bootstrap({
+        mode: 'modules',
+        logger: 'none',
+        target: ScriptTarget.ES5,
+        module: ModuleKind.CommonJS,
+        experimentalDecorators: true
+      })
+
+      const project = app.convert(app.expandInputFiles(['src']))
+
+      const writeResult = project && app.generateJson(files, filePath)
 
       if (!writeResult) rej('Couldn\'t write temp file.')
       else {

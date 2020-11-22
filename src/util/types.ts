@@ -136,29 +136,38 @@ export function parseTypeSimple(t: JSONOutput.SomeType): string {
   return 'unknown'
 }
 
-const splitVarName = (str: string): string[] | string[][] => {
-  if (str === '*') return ['*']
-  if (str.includes(' | ')) return [[str]]
+const splitVarName = (str: string) => {
+  const res: string[][] = []
+  let currGroup: string[] = [],
+    currStr = ''
 
-  str = str.replace(/\./g, '')
-  const matches = str.match(/([\w*{}]+)([^\w*]+)/g)
-  let output = []
-  if (matches) {
-    for (const match of matches) {
-      const groups = match.match(/([\w*{}]+)([^\w*]+)/)
-      groups && output.push([groups[1], groups[2]])
+  const isASymbol = (char: string) => '-!$%^&*()_+|~=`{}[]:;<>?,. '.includes(char) // string quotes excluded
+
+  for (const char of str) {
+    const currentlyInASymbolSection = isASymbol(currStr[0]),
+      charIsASymbol = isASymbol(char)
+
+    if (currStr.length && currentlyInASymbolSection != charIsASymbol) {
+      currGroup.push(currStr)
+      currStr = char
+
+      if (!charIsASymbol) {
+        res.push(currGroup)
+        currGroup = []
+      }
+    } else {
+      currStr += char
     }
-  } else {
-    output.push([(str.match(/([\w*{}]+)/g) || [])[0]])
   }
+  currGroup.push(currStr)
+  res.push(currGroup)
 
-  if (str.includes('=>')) output = [['('], ...output, ...splitVarName(str.split('=>')[1])] as string[][]
-  return output
+  return res
 }
 
 export type docType = string[][] | string[][][]
 export function parseType(t: SomeType) {
-  return [splitVarName(parseTypeSimple(t)) as string[][]]
+  return [splitVarName(parseTypeSimple(t))]
 }
 
 export declare function assert<T>(val: any): asserts val is T

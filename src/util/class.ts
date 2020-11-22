@@ -126,7 +126,7 @@ export type classMethodParamDoc = Exclude<classMethodDoc['params'], undefined>[n
 export function parseParam(param: DeclarationReflection): classMethodParamDoc {
   return {
     name: param.name,
-    description: param.comment?.shortText,
+    description: param.comment?.shortText?.trim() || param.comment?.text?.trim(),
     optional: param.flags.isOptional || undefined,
     default: param.defaultValue,
     type: param.type ? parseType(param.type) : undefined

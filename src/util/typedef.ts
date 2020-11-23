@@ -1,4 +1,4 @@
-import { DeclarationReflection } from '../documentation'
+import { DeclarationReflection, docMeta, parseMeta } from '../documentation'
 import { classMethodParamDoc } from './class'
 import { docType, parseType, typeUtil } from './types'
 
@@ -13,6 +13,7 @@ export interface typedefDoc {
   params?: classMethodParamDoc[]
   returns?: docType
   returnsDescription?: string
+  meta?: docMeta
 }
 export function parseTypedef(element: DeclarationReflection): typedefDoc {
   const baseReturn: typedefDoc = {
@@ -21,7 +22,8 @@ export function parseTypedef(element: DeclarationReflection): typedefDoc {
     see: element.comment?.tags?.filter(t => t.tag == 'see').map(t => t.text),
     access: (element.flags.isPrivate || element.comment?.tags?.some(t => t.tag == 'private')) ? 'private' : undefined,
     deprecated: element.comment?.tags?.some(t => t.tag == 'deprecated') || undefined,
-    type: element.type ? parseType(element.type) : undefined
+    type: element.type ? parseType(element.type) : undefined,
+    meta: parseMeta(element)
   }
 
   let typeDef!: DeclarationReflection | undefined

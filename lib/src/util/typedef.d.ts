@@ -1,4 +1,4 @@
-import { DeclarationReflection } from '../documentation';
+import { DeclarationReflection, docMeta } from '../documentation';
 import { classMethodParamDoc } from './class';
 import { docType } from './types';
 export interface typedefDoc {
@@ -12,5 +12,6 @@ export interface typedefDoc {
     params?: classMethodParamDoc[];
     returns?: docType;
     returnsDescription?: string;
+    meta?: docMeta;
 }
 export declare function parseTypedef(element: DeclarationReflection): typedefDoc;

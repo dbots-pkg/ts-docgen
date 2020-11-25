@@ -1,5 +1,4 @@
 import { JSONOutput } from 'typedoc'
-import { SomeType } from 'typedoc/dist/lib/serialization/schema'
 import { DeclarationReflection } from '../documentation'
 
 // #region Type-guard functions
@@ -47,6 +46,14 @@ function isUnionType(value: any): value is JSONOutput.UnionType {
 }
 function isUnknownType(value: any): value is JSONOutput.UnknownType {
   return typeof value == 'object' && value.type == 'unknown'
+}
+
+interface QueryType {
+  type: 'query'
+  queryType: JSONOutput.SomeType
+}
+function isQueryType(value: any): value is QueryType {
+  return typeof value == 'object' && value.type == 'query'
 }
 
 export const typeUtil = {
@@ -129,6 +136,9 @@ export function parseTypeSimple(t: JSONOutput.SomeType): string {
       .filter(s => !!s && s.trim().length > 0)
       .join(' | ')
   }
+  if (isQueryType(t)) {
+    return `typeof ${parseType(t.queryType)}`
+  }
   if (isInferredType(t) || isIntrinsicType(t) || isTypeParameterType(t) || isUnknownType(t)) {
     return t.name
   }
@@ -166,7 +176,7 @@ const splitVarName = (str: string) => {
 }
 
 export type docType = string[][] | string[][][]
-export function parseType(t: SomeType) {
+export function parseType(t: JSONOutput.SomeType) {
   return [splitVarName(parseTypeSimple(t))]
 }
 

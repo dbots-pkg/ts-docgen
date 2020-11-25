@@ -1,5 +1,5 @@
 {
-  "meta": { "version": "1.0.0", "format": 20, "date": 1606130122505 },
+  "meta": { "version": "1.0.0", "format": 20, "date": 1606295252824 },
   "classes": [
     {
       "name": "ClientFiller",
@@ -460,7 +460,7 @@
               ]
             }
           ],
-          "returns": [[["unknown", " | "], ["null"]]],
+          "returns": [[["typeof", " "], ["ServiceBase", " | "], ["null"]]],
           "meta": {
             "line": 65,
             "file": "ServiceBase.ts",
@@ -750,7 +750,7 @@
               ]
             }
           ],
-          "returns": [[["unknown", " | "], ["null"]]],
+          "returns": [[["typeof", " "], ["ServiceBase", " | "], ["null"]]],
           "meta": {
             "line": 65,
             "file": "ServiceBase.ts",
@@ -1119,7 +1119,7 @@
               ]
             }
           ],
-          "returns": [[["unknown", " | "], ["null"]]],
+          "returns": [[["typeof", " "], ["ServiceBase", " | "], ["null"]]],
           "meta": {
             "line": 65,
             "file": "ServiceBase.ts",
@@ -1391,7 +1391,7 @@
               ]
             }
           ],
-          "returns": [[["unknown", " | "], ["null"]]],
+          "returns": [[["typeof", " "], ["ServiceBase", " | "], ["null"]]],
           "meta": {
             "line": 65,
             "file": "ServiceBase.ts",
@@ -1709,7 +1709,7 @@
               ]
             }
           ],
-          "returns": [[["unknown", " | "], ["null"]]],
+          "returns": [[["typeof", " "], ["ServiceBase", " | "], ["null"]]],
           "meta": {
             "line": 65,
             "file": "ServiceBase.ts",
@@ -1963,7 +1963,7 @@
               ]
             }
           ],
-          "returns": [[["unknown", " | "], ["null"]]],
+          "returns": [[["typeof", " "], ["ServiceBase", " | "], ["null"]]],
           "meta": {
             "line": 65,
             "file": "ServiceBase.ts",
@@ -2181,7 +2181,7 @@
               ]
             }
           ],
-          "returns": [[["unknown", " | "], ["null"]]],
+          "returns": [[["typeof", " "], ["ServiceBase", " | "], ["null"]]],
           "meta": {
             "line": 65,
             "file": "ServiceBase.ts",
@@ -2602,7 +2602,7 @@
               ]
             }
           ],
-          "returns": [[["unknown", " | "], ["null"]]],
+          "returns": [[["typeof", " "], ["ServiceBase", " | "], ["null"]]],
           "meta": {
             "line": 65,
             "file": "ServiceBase.ts",
@@ -2897,7 +2897,7 @@
               ]
             }
           ],
-          "returns": [[["unknown", " | "], ["null"]]],
+          "returns": [[["typeof", " "], ["ServiceBase", " | "], ["null"]]],
           "meta": {
             "line": 65,
             "file": "ServiceBase.ts",
@@ -3197,7 +3197,7 @@
               ]
             }
           ],
-          "returns": [[["unknown", " | "], ["null"]]],
+          "returns": [[["typeof", " "], ["ServiceBase", " | "], ["null"]]],
           "meta": {
             "line": 65,
             "file": "ServiceBase.ts",
@@ -3400,7 +3400,7 @@
               ]
             }
           ],
-          "returns": [[["unknown", " | "], ["null"]]],
+          "returns": [[["typeof", " "], ["ServiceBase", " | "], ["null"]]],
           "meta": {
             "line": 65,
             "file": "ServiceBase.ts",
@@ -3711,7 +3711,7 @@
               ]
             }
           ],
-          "returns": [[["unknown", " | "], ["null"]]],
+          "returns": [[["typeof", " "], ["ServiceBase", " | "], ["null"]]],
           "meta": {
             "line": 65,
             "file": "ServiceBase.ts",
@@ -3937,7 +3937,7 @@
               ]
             }
           ],
-          "returns": [[["unknown", " | "], ["null"]]],
+          "returns": [[["typeof", " "], ["ServiceBase", " | "], ["null"]]],
           "meta": {
             "line": 65,
             "file": "ServiceBase.ts",
@@ -4210,7 +4210,7 @@
               ]
             }
           ],
-          "returns": [[["unknown", " | "], ["null"]]],
+          "returns": [[["typeof", " "], ["ServiceBase", " | "], ["null"]]],
           "meta": {
             "line": 65,
             "file": "ServiceBase.ts",
@@ -4499,7 +4499,7 @@
               ]
             }
           ],
-          "returns": [[["unknown", " | "], ["null"]]],
+          "returns": [[["typeof", " "], ["ServiceBase", " | "], ["null"]]],
           "meta": {
             "line": 65,
             "file": "ServiceBase.ts",
@@ -4725,7 +4725,7 @@
               ]
             }
           ],
-          "returns": [[["unknown", " | "], ["null"]]],
+          "returns": [[["typeof", " "], ["ServiceBase", " | "], ["null"]]],
           "meta": {
             "line": 65,
             "file": "ServiceBase.ts",
@@ -5030,7 +5030,7 @@
               ]
             }
           ],
-          "returns": [[["unknown", " | "], ["null"]]],
+          "returns": [[["typeof", " "], ["ServiceBase", " | "], ["null"]]],
           "meta": {
             "line": 65,
             "file": "ServiceBase.ts",
@@ -5299,7 +5299,7 @@
               ]
             }
           ],
-          "returns": [[["unknown", " | "], ["null"]]],
+          "returns": [[["typeof", " "], ["ServiceBase", " | "], ["null"]]],
           "meta": {
             "line": 65,
             "file": "ServiceBase.ts",
@@ -5594,7 +5594,7 @@
               ]
             }
           ],
-          "returns": [[["unknown", " | "], ["null"]]],
+          "returns": [[["typeof", " "], ["ServiceBase", " | "], ["null"]]],
           "meta": {
             "line": 65,
             "file": "ServiceBase.ts",
@@ -5960,7 +5960,7 @@
               ]
             }
           ],
-          "returns": [[["unknown", " | "], ["null"]]],
+          "returns": [[["typeof", " "], ["ServiceBase", " | "], ["null"]]],
           "meta": {
             "line": 65,
             "file": "ServiceBase.ts",
@@ -6274,7 +6274,7 @@
               ]
             }
           ],
-          "returns": [[["unknown", " | "], ["null"]]],
+          "returns": [[["typeof", " "], ["ServiceBase", " | "], ["null"]]],
           "meta": {
             "line": 65,
             "file": "ServiceBase.ts",
@@ -6546,7 +6546,7 @@
               ]
             }
           ],
-          "returns": [[["unknown", " | "], ["null"]]],
+          "returns": [[["typeof", " "], ["ServiceBase", " | "], ["null"]]],
           "meta": {
             "line": 65,
             "file": "ServiceBase.ts",
@@ -6772,7 +6772,7 @@
               ]
             }
           ],
-          "returns": [[["unknown", " | "], ["null"]]],
+          "returns": [[["typeof", " "], ["ServiceBase", " | "], ["null"]]],
           "meta": {
             "line": 65,
             "file": "ServiceBase.ts",
@@ -6998,7 +6998,7 @@
               ]
             }
           ],
-          "returns": [[["unknown", " | "], ["null"]]],
+          "returns": [[["typeof", " "], ["ServiceBase", " | "], ["null"]]],
           "meta": {
             "line": 65,
             "file": "ServiceBase.ts",
@@ -7375,7 +7375,7 @@
               ]
             }
           ],
-          "returns": [[["unknown", " | "], ["null"]]],
+          "returns": [[["typeof", " "], ["ServiceBase", " | "], ["null"]]],
           "meta": {
             "line": 65,
             "file": "ServiceBase.ts",
@@ -7620,7 +7620,7 @@
               ]
             }
           ],
-          "returns": [[["unknown", " | "], ["null"]]],
+          "returns": [[["typeof", " "], ["ServiceBase", " | "], ["null"]]],
           "meta": {
             "line": 65,
             "file": "ServiceBase.ts",
@@ -7956,7 +7956,7 @@
               ]
             }
           ],
-          "returns": [[["unknown", " | "], ["null"]]],
+          "returns": [[["typeof", " "], ["ServiceBase", " | "], ["null"]]],
           "meta": {
             "line": 65,
             "file": "ServiceBase.ts",
@@ -8514,7 +8514,7 @@
               ]
             }
           ],
-          "returns": [[["unknown", " | "], ["null"]]],
+          "returns": [[["typeof", " "], ["ServiceBase", " | "], ["null"]]],
           "meta": {
             "line": 65,
             "file": "ServiceBase.ts",
@@ -8547,7 +8547,8 @@
           "returns": [
             [
               ["ReturnType", "<"],
-              ["unknown", "["],
+              ["typeof", " "],
+              ["ServiceBase", "["],
               ["'", "_"],
               ["post'", "]>"]
             ]

@@ -1,5 +1,4 @@
 import { JSONOutput } from 'typedoc';
-import { SomeType } from 'typedoc/dist/lib/serialization/schema';
 declare function isArrayType(value: any): value is JSONOutput.ArrayType;
 declare function isConditionalType(value: any): value is JSONOutput.ConditionalType;
 declare function isIndexedAccessType(value: any): value is JSONOutput.IndexedAccessType;
@@ -34,6 +33,6 @@ export declare const typeUtil: {
 };
 export declare function parseTypeSimple(t: JSONOutput.SomeType): string;
 export declare type docType = string[][] | string[][][];
-export declare function parseType(t: SomeType): string[][][];
+export declare function parseType(t: JSONOutput.SomeType): string[][][];
 export declare function assert<T>(val: any): asserts val is T;
 export {};

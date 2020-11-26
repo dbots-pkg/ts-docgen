@@ -137,7 +137,7 @@ export function parseTypeSimple(t: JSONOutput.SomeType): string {
       .join(' | ')
   }
   if (isQueryType(t)) {
-    return `typeof ${parseType(t.queryType)}`
+    return `(typeof ${parseType(t.queryType)})`
   }
   if (isInferredType(t) || isIntrinsicType(t) || isTypeParameterType(t) || isUnknownType(t)) {
     return t.name

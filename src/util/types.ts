@@ -125,7 +125,9 @@ export function parseTypeSimple(t: JSONOutput.SomeType): string {
         params = (s.parameters as DeclarationReflection[])?.map(
           (p) => `${p.name}: ${p.type ? parseType(p.type) : 'unknown'}`
         )
-      return `(${params.join(', ')}) => ${s.type ? parseType(s.type) : 'unknown'}`
+      return `(${params?.join(', ') || '...args: unknown[]'}) => ${
+        s.type ? parseType(s.type) : 'unknown'
+      }`
     }
 
     return '{}'

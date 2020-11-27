@@ -33,7 +33,7 @@ export function generateDocs(data: ProjectData): codeDoc {
     // externals = [], // ???
     typedefs = []
 
-  const modules = data.children?.filter(c => c.kindString == 'Module')
+  const modules = data.children?.filter((c) => c.kindString == 'Module')
 
   if (modules) {
     for (const module of modules) {

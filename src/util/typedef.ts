@@ -19,9 +19,12 @@ export function parseTypedef(element: DeclarationReflection): typedefDoc {
   const baseReturn: typedefDoc = {
     name: element.name,
     description: element.comment?.shortText,
-    see: element.comment?.tags?.filter(t => t.tag == 'see').map(t => t.text),
-    access: (element.flags.isPrivate || element.comment?.tags?.some(t => t.tag == 'private')) ? 'private' : undefined,
-    deprecated: element.comment?.tags?.some(t => t.tag == 'deprecated') || undefined,
+    see: element.comment?.tags?.filter((t) => t.tag == 'see').map((t) => t.text),
+    access:
+      element.flags.isPrivate || element.comment?.tags?.some((t) => t.tag == 'private')
+        ? 'private'
+        : undefined,
+    deprecated: element.comment?.tags?.some((t) => t.tag == 'deprecated') || undefined,
     type: element.type ? parseType(element.type) : undefined,
     meta: parseMeta(element)
   }
@@ -38,21 +41,20 @@ export function parseTypedef(element: DeclarationReflection): typedefDoc {
 
     if (children && children.length > 0) {
       // It's an instance-like typedef
-      const props: classMethodParamDoc[] = children
-        .map((child: DeclarationReflection) => ({
-          name: child.name,
-          description: child.comment?.shortText || (child.signatures || [])[0]?.comment?.shortText,
-          optional: child.flags.isOptional || undefined,
-          default: child.defaultValue,
-          type: child.type
-            ? parseType(child.type)
-            : child.kindString == 'Method'
-              ? parseType({
-                type: 'reflection',
-                declaration: child
-              })
-              : undefined
-        }))
+      const props: classMethodParamDoc[] = children.map((child: DeclarationReflection) => ({
+        name: child.name,
+        description: child.comment?.shortText || (child.signatures || [])[0]?.comment?.shortText,
+        optional: child.flags.isOptional || undefined,
+        default: child.defaultValue,
+        type: child.type
+          ? parseType(child.type)
+          : child.kindString == 'Method'
+          ? parseType({
+              type: 'reflection',
+              declaration: child
+            })
+          : undefined
+      }))
 
       return {
         ...baseReturn,
@@ -64,20 +66,21 @@ export function parseTypedef(element: DeclarationReflection): typedefDoc {
       // For some reason, it's a function typedef
       const sig: DeclarationReflection = signatures[0]
 
-      const params: classMethodParamDoc[] | undefined = sig
-        .parameters?.map((param: DeclarationReflection) => ({
+      const params: classMethodParamDoc[] | undefined = sig.parameters?.map(
+        (param: DeclarationReflection) => ({
           name: param.name,
           description: param.comment?.shortText,
           optional: param.flags.isOptional || undefined,
           default: param.defaultValue,
           type: param.type ? parseType(param.type) : undefined
-        }))
+        })
+      )
 
       return {
         ...baseReturn,
         description: sig.comment?.shortText,
-        see: sig.comment?.tags?.filter(t => t.tag == 'see').map(t => t.text),
-        deprecated: sig.comment?.tags?.some(t => t.tag == 'deprecated') || undefined,
+        see: sig.comment?.tags?.filter((t) => t.tag == 'see').map((t) => t.text),
+        deprecated: sig.comment?.tags?.some((t) => t.tag == 'deprecated') || undefined,
 
         params,
         returns: sig.type ? parseType(sig.type) : undefined,

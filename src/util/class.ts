@@ -19,24 +19,30 @@ export interface classDoc {
 export function parseClass(element: DeclarationReflection): classDoc {
   const extended = (element.extendedTypes || [])[0]
   const implemented = (element.implementedTypes || [])[0]
-  const construct = element.children?.find(c => c.kindString == 'Constructor')
-  const props = element.children?.filter(c => c.kindString == 'Property')
-  const methods = element.children?.filter(c => c.kindString == 'Method')
-  const events = element.children?.filter(c => c.kindString == 'Event')
+  const construct = element.children?.find((c) => c.kindString == 'Constructor')
+  // Ignore setter-only accessors (the typings still exist, but the docs don't show them)
+  const props = element.children?.filter(
+    (c) => c.kindString == 'Property' || (c.kindString == 'Accessor' && c.getSignature?.length)
+  )
+  const methods = element.children?.filter((c) => c.kindString == 'Method')
+  const events = element.children?.filter((c) => c.kindString == 'Event')
 
   return {
     name: element.name,
     description: element.comment?.shortText,
-    see: element.comment?.tags?.filter(t => t.tag == 'see').map(t => t.text),
+    see: element.comment?.tags?.filter((t) => t.tag == 'see').map((t) => t.text),
     extends: extended ? [parseTypeSimple(extended)] : undefined,
     implements: implemented ? [parseTypeSimple(implemented)] : undefined,
-    access: (element.flags.isPrivate || element.comment?.tags?.some(t => t.tag == 'private')) ? 'private' : undefined,
-    abstract: element.comment?.tags?.some(t => t.tag == 'abstract') || undefined,
-    deprecated: element.comment?.tags?.some(t => t.tag == 'deprecated') || undefined,
+    access:
+      element.flags.isPrivate || element.comment?.tags?.some((t) => t.tag == 'private')
+        ? 'private'
+        : undefined,
+    abstract: element.comment?.tags?.some((t) => t.tag == 'abstract') || undefined,
+    deprecated: element.comment?.tags?.some((t) => t.tag == 'deprecated') || undefined,
     construct: construct ? parseClassMethod(construct) : undefined,
-    props: (props && props.length > 0) ? props.map(parseClassProp) : undefined,
-    methods: (methods && methods.length > 0) ? methods.map(parseClassMethod) : undefined,
-    events: (events && events.length > 0) ? events.map(parseClassEvent) : undefined,
+    props: props && props.length > 0 ? props.map(parseClassProp) : undefined,
+    methods: methods && methods.length > 0 ? methods.map(parseClassMethod) : undefined,
+    events: events && events.length > 0 ? events.map(parseClassEvent) : undefined,
     meta: parseMeta(element)
   }
 }
@@ -57,20 +63,56 @@ interface classPropDoc {
   meta?: docMeta
 }
 function parseClassProp(element: DeclarationReflection): classPropDoc {
-  return {
+  const base: classPropDoc = {
     name: element.name,
     description: element.comment?.shortText,
-    see: element.comment?.tags?.filter(t => t.tag == 'see').map(t => t.text),
+    see: element.comment?.tags?.filter((t) => t.tag == 'see').map((t) => t.text),
     scope: element.flags.isStatic ? 'static' : undefined,
-    access: (element.flags.isPrivate || element.comment?.tags?.some(t => t.tag == 'private')) ? 'private' : undefined,
+    access:
+      element.flags.isPrivate || element.comment?.tags?.some((t) => t.tag == 'private')
+        ? 'private'
+        : undefined,
     // @ts-expect-error // isReadonly is not in the typings, but appears in the JSON output
     readonly: (element.flags.isReadonly as boolean) || undefined,
-    abstract: element.comment?.tags?.some(t => t.tag == 'abstract') || undefined,
-    deprecated: element.comment?.tags?.some(t => t.tag == 'deprecated') || undefined,
+    abstract: element.comment?.tags?.some((t) => t.tag == 'abstract') || undefined,
+    deprecated: element.comment?.tags?.some((t) => t.tag == 'deprecated') || undefined,
     default: element.defaultValue,
     type: element.type ? parseType(element.type) : undefined,
     meta: parseMeta(element)
   }
+
+  if (element.kindString == 'Accessor') {
+    // I'll just ignore set signatures: if there's a getter, I'll take the docs from that
+    // If a set signature is not present at all, I'll mark the prop as readonly.
+
+    const getter: DeclarationReflection = (element.getSignature || [])[0]
+    const hasSetter = !!element.setSignature?.length
+    const res = { ...base }
+
+    if (!getter) {
+      // This should never happen, it should be avoided before this function is called.
+      throw new Error("Can't parse accessor without getter.")
+    }
+
+    if (!hasSetter) res.readonly = true
+
+    return {
+      ...res,
+      description: getter.comment?.shortText,
+      see: getter.comment?.tags?.filter((t) => t.tag == 'see').map((t) => t.text),
+      access:
+        getter.flags.isPrivate || getter.comment?.tags?.some((t) => t.tag == 'private')
+          ? 'private'
+          : undefined,
+      readonly: res.readonly || !hasSetter || undefined,
+      abstract: getter.comment?.tags?.some((t) => t.tag == 'abstract') || undefined,
+      deprecated: getter.comment?.tags?.some((t) => t.tag == 'deprecated') || undefined,
+      default: res.default || getter.defaultValue,
+      type: getter.type ? parseType(getter.type) : undefined
+    }
+  }
+
+  return base
 }
 
 interface classMethodDoc {
@@ -108,13 +150,16 @@ export function parseClassMethod(element: DeclarationReflection): classMethodDoc
   return {
     name: element.name,
     description: signature.comment?.shortText,
-    see: signature.comment?.tags?.filter(t => t.tag == 'see').map(t => t.text),
+    see: signature.comment?.tags?.filter((t) => t.tag == 'see').map((t) => t.text),
     scope: element.flags.isStatic ? 'static' : undefined,
-    access: (element.flags.isPrivate || signature.comment?.tags?.some(t => t.tag == 'private')) ? 'private' : undefined,
-    examples: signature.comment?.tags?.filter(t => t.tag == 'example').map(t => t.text),
-    abstract: signature.comment?.tags?.some(t => t.tag == 'abstract') || undefined,
-    deprecated: signature.comment?.tags?.some(t => t.tag == 'deprecated') || undefined,
-    emits: signature.comment?.tags?.filter(t => t.tag == 'emits').map(t => t.text),
+    access:
+      element.flags.isPrivate || signature.comment?.tags?.some((t) => t.tag == 'private')
+        ? 'private'
+        : undefined,
+    examples: signature.comment?.tags?.filter((t) => t.tag == 'example').map((t) => t.text),
+    abstract: signature.comment?.tags?.some((t) => t.tag == 'abstract') || undefined,
+    deprecated: signature.comment?.tags?.some((t) => t.tag == 'deprecated') || undefined,
+    emits: signature.comment?.tags?.filter((t) => t.tag == 'emits').map((t) => t.text),
     params: signature.parameters ? signature.parameters.map(parseParam) : undefined,
     returns: signature.type ? parseType(signature.type) : undefined,
     returnsDescription: signature.comment?.returns,

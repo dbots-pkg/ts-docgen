@@ -11,16 +11,22 @@ const readFile = util.promisify(fs.readFile)
 export type ProjectData = JSONOutput.ProjectReflection
 
 // I'm using an interface only because otherwise it messes up my syntax highlighter
-export interface customSettings extends Record<string, {
-  name: string
-  files: Record<
-    string, {
+export interface customSettings
+  extends Record<
+    string,
+    {
       name: string
-      type: string
-      content: string
-      path: string
-    } | null>
-}> { }
+      files: Record<
+        string,
+        {
+          name: string
+          type: string
+          content: string
+          path: string
+        } | null
+      >
+    }
+  > {}
 
 interface Config {
   /** Source directories to parse TypeDoc in */
@@ -55,8 +61,7 @@ export function runGenerator(config: Config) {
   if (config.existingOutput) {
     console.log('Parsing using existing output file...')
     mainPromises[0] = readFile(config.existingOutput, 'utf-8').then(JSON.parse)
-  }
-  else if (config.source) {
+  } else if (config.source) {
     console.log('Parsing using TypeDoc...')
     // I'm ashamed of this implementation, but it works.
     const files: string[] = config.source
@@ -83,11 +88,11 @@ export function runGenerator(config: Config) {
 
       const writeResult = project && app.generateJson(files, filePath)
 
-      if (!writeResult) rej('Couldn\'t write temp file.')
+      if (!writeResult) rej("Couldn't write temp file.")
       else {
         const data = require(filePath) as ProjectData
         if (typeof data == 'object') res(data)
-        else rej('Couldn\'t access temp file.')
+        else rej("Couldn't access temp file.")
       }
     })
   }
@@ -103,7 +108,7 @@ export function runGenerator(config: Config) {
     else if (defExtension === '.yml' || defExtension === '.yaml') type = 'yaml'
     else throw new TypeError('Unknown custom docs definition file type.')
 
-    mainPromises[1] = readFile(config.custom, 'utf-8').then(defContent => {
+    mainPromises[1] = readFile(config.custom, 'utf-8').then((defContent) => {
       // Parse the definition file
       let definitions
       if (type === 'json') definitions = JSON.parse(defContent)
@@ -116,7 +121,7 @@ export function runGenerator(config: Config) {
         // Add the category to the custom docs
         const catID = cat.id || cat.name.toLowerCase()
         const dir = path.join(customDir, cat.path || catID)
-        const category: (typeof custom)['category'] = {
+        const category: typeof custom['category'] = {
           name: cat.name || cat.id,
           files: {}
         }
@@ -129,48 +134,54 @@ export function runGenerator(config: Config) {
           const fileID = file.id || path.basename(file.path, extension)
           category.files[fileID] = null
 
-          filePromises.push(readFile(fileRootPath, 'utf-8').then(content => {
-            category.files[fileID] = {
-              name: file.name,
-              type: extension.toLowerCase().replace(/^\./, ''),
-              content,
-              path: path.relative(config.root || '.', fileRootPath).replace(/\\/g, '/')
-            }
-            if (config.verbose) console.log(`Loaded custom docs file ${catID}/${fileID}`)
-          }))
+          filePromises.push(
+            readFile(fileRootPath, 'utf-8').then((content) => {
+              category.files[fileID] = {
+                name: file.name,
+                type: extension.toLowerCase().replace(/^\./, ''),
+                content,
+                path: path.relative(config.root || '.', fileRootPath).replace(/\\/g, '/')
+              }
+              if (config.verbose) console.log(`Loaded custom docs file ${catID}/${fileID}`)
+            })
+          )
         }
       }
 
       return Promise.all(filePromises).then(() => {
-        const fileCount = Object.keys(custom).map(k => Object.keys(custom[k])).reduce((prev, c) => prev + c.length, 0)
+        const fileCount = Object.keys(custom)
+          .map((k) => Object.keys(custom[k]))
+          .reduce((prev, c) => prev + c.length, 0)
         const categoryCount = Object.keys(custom).length
         console.log(
           `${fileCount} custom docs file${fileCount !== 1 ? 's' : ''} in ` +
-          `${categoryCount} categor${categoryCount !== 1 ? 'ies' : 'y'} loaded.`
+            `${categoryCount} categor${categoryCount !== 1 ? 'ies' : 'y'} loaded.`
         )
         return custom
       })
     })
   }
 
-  Promise.all(mainPromises).then((results) => {
-    const [data, custom] = results as [ProjectData, customSettings]
+  Promise.all(mainPromises)
+    .then((results) => {
+      const [data, custom] = results as [ProjectData, customSettings]
 
-    console.log(`Serializing documentation with format version ${FORMAT_VERSION}...`)
-    const docs = generateDocs(data)
-    const output = JSON.stringify(generateFinalOutput(docs, custom), null, config.spaces)
+      console.log(`Serializing documentation with format version ${FORMAT_VERSION}...`)
+      const docs = generateDocs(data)
+      const output = JSON.stringify(generateFinalOutput(docs, custom), null, config.spaces)
 
-    if (config.output) {
-      console.log(`Writing to ${config.output}...`)
-      fs.writeFileSync(config.output, output)
-    }
+      if (config.output) {
+        console.log(`Writing to ${config.output}...`)
+        fs.writeFileSync(config.output, output)
+      }
 
-    console.log('Done!')
-    process.exit(0)
-  }).catch((err) => {
-    console.error(err)
-    process.exit(1)
-  })
+      console.log('Done!')
+      process.exit(0)
+    })
+    .catch((err) => {
+      console.error(err)
+      process.exit(1)
+    })
 }
 
 function parseConfig(config: Config) {

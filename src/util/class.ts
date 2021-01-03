@@ -172,7 +172,7 @@ export function parseParam(param: DeclarationReflection): classMethodParamDoc {
   return {
     name: param.name,
     description: param.comment?.shortText?.trim() || param.comment?.text?.trim(),
-    optional: param.flags.isOptional || undefined,
+    optional: param.flags.isOptional || typeof param.defaultValue != 'undefined' || undefined,
     default: param.defaultValue,
     type: param.type ? parseType(param.type) : undefined
   }

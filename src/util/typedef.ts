@@ -39,12 +39,12 @@ export function parseTypedef(element: DeclarationReflection): typedefDoc {
   if (typeDef) {
     const { children, signatures } = typeDef
 
+    // It's an instance-like typedef
     if (children && children.length > 0) {
-      // It's an instance-like typedef
       const props: classMethodParamDoc[] = children.map((child: DeclarationReflection) => ({
         name: child.name,
         description: child.comment?.shortText || (child.signatures || [])[0]?.comment?.shortText,
-        optional: child.flags.isOptional || undefined,
+        optional: child.flags.isOptional || typeof child.defaultValue != 'undefined' || undefined,
         default: child.defaultValue,
         type: child.type
           ? parseType(child.type)
@@ -62,15 +62,15 @@ export function parseTypedef(element: DeclarationReflection): typedefDoc {
       }
     }
 
+    // For some reason, it's a function typedef
     if (signatures && signatures.length > 0) {
-      // For some reason, it's a function typedef
       const sig: DeclarationReflection = signatures[0]
 
       const params: classMethodParamDoc[] | undefined = sig.parameters?.map(
         (param: DeclarationReflection) => ({
           name: param.name,
           description: param.comment?.shortText,
-          optional: param.flags.isOptional || undefined,
+          optional: param.flags.isOptional || typeof param.defaultValue != 'undefined' || undefined,
           default: param.defaultValue,
           type: param.type ? parseType(param.type) : undefined
         })

@@ -76,7 +76,10 @@ function parseClassProp(element: DeclarationReflection): classPropDoc {
     readonly: (element.flags.isReadonly as boolean) || undefined,
     abstract: element.comment?.tags?.some((t) => t.tag == 'abstract') || undefined,
     deprecated: element.comment?.tags?.some((t) => t.tag == 'deprecated') || undefined,
-    default: element.defaultValue,
+    default:
+      element.defaultValue ||
+      element.comment?.tags?.find((t) => t.tag == 'default')?.text ||
+      undefined,
     type: element.type ? parseType(element.type) : undefined,
     meta: parseMeta(element)
   }
@@ -107,7 +110,11 @@ function parseClassProp(element: DeclarationReflection): classPropDoc {
       readonly: res.readonly || !hasSetter || undefined,
       abstract: getter.comment?.tags?.some((t) => t.tag == 'abstract') || undefined,
       deprecated: getter.comment?.tags?.some((t) => t.tag == 'deprecated') || undefined,
-      default: res.default || getter.defaultValue,
+      default:
+        res.default ||
+        getter.defaultValue ||
+        getter.comment?.tags?.find((t) => t.tag == 'default')?.text ||
+        undefined,
       type: getter.type ? parseType(getter.type) : undefined
     }
   }
@@ -173,7 +180,8 @@ export function parseParam(param: DeclarationReflection): classMethodParamDoc {
     name: param.name,
     description: param.comment?.shortText?.trim() || param.comment?.text?.trim(),
     optional: param.flags.isOptional || typeof param.defaultValue != 'undefined' || undefined,
-    default: param.defaultValue,
+    default:
+      param.defaultValue || param.comment?.tags?.find((t) => t.tag == 'default')?.text || undefined,
     type: param.type ? parseType(param.type) : undefined
   }
 }

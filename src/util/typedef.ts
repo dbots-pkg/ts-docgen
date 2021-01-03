@@ -45,7 +45,10 @@ export function parseTypedef(element: DeclarationReflection): typedefDoc {
         name: child.name,
         description: child.comment?.shortText || (child.signatures || [])[0]?.comment?.shortText,
         optional: child.flags.isOptional || typeof child.defaultValue != 'undefined' || undefined,
-        default: child.defaultValue,
+        default:
+          child.defaultValue ||
+          child.comment?.tags?.find((t) => t.tag == 'default')?.text ||
+          undefined,
         type: child.type
           ? parseType(child.type)
           : child.kindString == 'Method'
@@ -71,7 +74,10 @@ export function parseTypedef(element: DeclarationReflection): typedefDoc {
           name: param.name,
           description: param.comment?.shortText,
           optional: param.flags.isOptional || typeof param.defaultValue != 'undefined' || undefined,
-          default: param.defaultValue,
+          default:
+            param.defaultValue ||
+            param.comment?.tags?.find((t) => t.tag == 'default')?.text ||
+            undefined,
           type: param.type ? parseType(param.type) : undefined
         })
       )

@@ -69,6 +69,7 @@ function parseRootElement(element: DeclarationReflection) {
 
     case 'Interface':
     case 'Type alias':
+    case 'Enumeration':
       return {
         type: 'typedef',
         value: parseTypedef(element)

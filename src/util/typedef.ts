@@ -34,6 +34,17 @@ export function parseTypedef(element: DeclarationReflection): typedefDoc {
     typeDef = element.type.declaration as DeclarationReflection
   } else if (element.kindString == 'Interface') {
     typeDef = element
+  } else if (element.kindString == 'Enumeration') {
+    return {
+      ...baseReturn,
+      props: element.children?.length
+        ? element.children.map((child: DeclarationReflection) => ({
+            name: child.name,
+            description: child.comment?.shortText,
+            type: typeof child.defaultValue != 'undefined' ? [[[child.defaultValue]]] : undefined
+          }))
+        : undefined
+    }
   }
 
   if (typeDef) {

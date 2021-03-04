@@ -23,9 +23,11 @@ interface Config {
     output?: string;
     /** Number of spaces to use in output JSON */
     spaces?: number;
+    /** Path to your tsconfig file */
+    tsconfig?: string;
     /** Logs extra information to the console */
     verbose?: boolean;
-    /** Path to JSON/YAML config file */
+    /** Path to JSON/YAML config file with the options above*/
     config?: string;
 }
 export declare function runGenerator(config: Config): void;

@@ -1,5 +1,6 @@
 import { DeclarationReflection, docMeta, parseMeta } from '../documentation'
 import { docType, parseType, parseTypeSimple } from './types'
+import path from 'path'
 
 export interface classDoc {
   name: string
@@ -27,8 +28,10 @@ export function parseClass(element: DeclarationReflection): classDoc {
   const methods = element.children?.filter((c) => c.kindString == 'Method')
   const events = element.children?.filter((c) => c.kindString == 'Event')
 
+  const meta = parseMeta(element)
+
   return {
-    name: element.name,
+    name: element.name == 'default' ? path.parse(meta?.file || 'default').name : element.name,
     description: element.comment?.shortText,
     see: element.comment?.tags?.filter((t) => t.tag == 'see').map((t) => t.text),
     extends: extended ? [parseTypeSimple(extended)] : undefined,
@@ -43,7 +46,7 @@ export function parseClass(element: DeclarationReflection): classDoc {
     props: props && props.length > 0 ? props.map(parseClassProp) : undefined,
     methods: methods && methods.length > 0 ? methods.map(parseClassMethod) : undefined,
     events: events && events.length > 0 ? events.map(parseClassEvent) : undefined,
-    meta: parseMeta(element)
+    meta
   }
 }
 
@@ -72,7 +75,6 @@ function parseClassProp(element: DeclarationReflection): classPropDoc {
       element.flags.isPrivate || element.comment?.tags?.some((t) => t.tag == 'private')
         ? 'private'
         : undefined,
-    // @ts-expect-error // isReadonly is not in the typings, but appears in the JSON output
     readonly: (element.flags.isReadonly as boolean) || undefined,
     abstract: element.comment?.tags?.some((t) => t.tag == 'abstract') || undefined,
     deprecated: element.comment?.tags?.some((t) => t.tag == 'deprecated') || undefined,
@@ -88,7 +90,7 @@ function parseClassProp(element: DeclarationReflection): classPropDoc {
     // I'll just ignore set signatures: if there's a getter, I'll take the docs from that
     // If a set signature is not present at all, I'll mark the prop as readonly.
 
-    const getter: DeclarationReflection = (element.getSignature || [])[0]
+    const getter = (element.getSignature || [])[0]
     const hasSetter = !!element.setSignature?.length
     const res = { ...base }
 
@@ -112,6 +114,7 @@ function parseClassProp(element: DeclarationReflection): classPropDoc {
       deprecated: getter.comment?.tags?.some((t) => t.tag == 'deprecated') || undefined,
       default:
         res.default ||
+        // @ts-expect-error
         getter.defaultValue ||
         getter.comment?.tags?.find((t) => t.tag == 'default')?.text ||
         undefined,
@@ -152,7 +155,7 @@ interface classMethodDoc {
   meta?: docMeta
 }
 export function parseClassMethod(element: DeclarationReflection): classMethodDoc {
-  const signature = ((element.signatures || [])[0] || element) as DeclarationReflection
+  const signature = (element.signatures || [])[0] || element
 
   return {
     name: element.name,

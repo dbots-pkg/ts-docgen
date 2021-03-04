@@ -5,7 +5,6 @@ import path from 'path'
 import fs from 'fs'
 import util from 'util'
 import { FORMAT_VERSION, generateDocs, generateFinalOutput } from './documentation'
-import { ModuleKind, ScriptTarget } from 'typescript'
 const readFile = util.promisify(fs.readFile)
 
 export type ProjectData = JSONOutput.ProjectReflection
@@ -47,10 +46,13 @@ interface Config {
   /** Number of spaces to use in output JSON */
   spaces?: number
 
+  /** Path to your tsconfig file */
+  tsconfig?: string
+
   /** Logs extra information to the console */
   verbose?: boolean
 
-  /** Path to JSON/YAML config file */
+  /** Path to JSON/YAML config file with the options above*/
   config?: string
 }
 export function runGenerator(config: Config) {
@@ -63,10 +65,7 @@ export function runGenerator(config: Config) {
     mainPromises[0] = readFile(config.existingOutput, 'utf-8').then(JSON.parse)
   } else if (config.source) {
     console.log('Parsing using TypeDoc...')
-    // I'm ashamed of this implementation, but it works.
-    const files: string[] = config.source
 
-    // for (const dir of config.source) files.push(`${dir}/*/*.ts`, `${dir}/**/*.ts*/`)
     mainPromises[0] = new Promise((res, rej) => {
       const app = new TypeDoc.Application(),
         tempDir = tmp.dirSync(),
@@ -77,23 +76,24 @@ export function runGenerator(config: Config) {
       app.options.addReader(new TypeDoc.TypeDocReader())
 
       app.bootstrap({
-        mode: 'modules',
-        logger: 'none',
-        target: ScriptTarget.ES5,
-        module: ModuleKind.CommonJS,
-        experimentalDecorators: true
+        plugin: ['typedoc-plugin-as-member-of'],
+        entryPoints: config.source,
+        tsconfig: config.tsconfig
       })
 
-      const project = app.convert(app.expandInputFiles(files))
+      const project = app.convert()
 
-      const writeResult = project && app.generateJson(files, filePath)
-
-      if (!writeResult) rej("Couldn't write temp file.")
-      else {
-        const data = require(filePath) as ProjectData
-        if (typeof data == 'object') res(data)
-        else rej("Couldn't access temp file.")
-      }
+      project &&
+        app
+          .generateJson(project, filePath)
+          .then(() => {
+            const data = require(filePath) as ProjectData
+            if (typeof data == 'object') res(data)
+            else rej("Couldn't access temp file.")
+          })
+          .catch(() => {
+            rej("Couldn't write temp file.")
+          })
     })
   }
 

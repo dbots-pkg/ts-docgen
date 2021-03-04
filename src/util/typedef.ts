@@ -29,16 +29,16 @@ export function parseTypedef(element: DeclarationReflection): typedefDoc {
     meta: parseMeta(element)
   }
 
-  let typeDef!: DeclarationReflection | undefined
+  let typeDef: DeclarationReflection | undefined
   if (typeUtil.isReflectionType(element.type)) {
-    typeDef = element.type.declaration as DeclarationReflection
+    typeDef = element.type.declaration
   } else if (element.kindString == 'Interface') {
     typeDef = element
   } else if (element.kindString == 'Enumeration') {
     return {
       ...baseReturn,
       props: element.children?.length
-        ? element.children.map((child: DeclarationReflection) => ({
+        ? element.children.map((child) => ({
             name: child.name,
             description: child.comment?.shortText,
             type: typeof child.defaultValue != 'undefined' ? [[[child.defaultValue]]] : undefined
@@ -52,7 +52,7 @@ export function parseTypedef(element: DeclarationReflection): typedefDoc {
 
     // It's an instance-like typedef
     if (children && children.length > 0) {
-      const props: classMethodParamDoc[] = children.map((child: DeclarationReflection) => ({
+      const props: classMethodParamDoc[] = children.map((child) => ({
         name: child.name,
         description: child.comment?.shortText || (child.signatures || [])[0]?.comment?.shortText,
         optional: child.flags.isOptional || typeof child.defaultValue != 'undefined' || undefined,
@@ -78,20 +78,18 @@ export function parseTypedef(element: DeclarationReflection): typedefDoc {
 
     // For some reason, it's a function typedef
     if (signatures && signatures.length > 0) {
-      const sig: DeclarationReflection = signatures[0]
+      const sig = signatures[0]
 
-      const params: classMethodParamDoc[] | undefined = sig.parameters?.map(
-        (param: DeclarationReflection) => ({
-          name: param.name,
-          description: param.comment?.shortText,
-          optional: param.flags.isOptional || typeof param.defaultValue != 'undefined' || undefined,
-          default:
-            param.defaultValue ||
-            param.comment?.tags?.find((t) => t.tag == 'default')?.text ||
-            undefined,
-          type: param.type ? parseType(param.type) : undefined
-        })
-      )
+      const params: classMethodParamDoc[] | undefined = sig.parameters?.map((param) => ({
+        name: param.name,
+        description: param.comment?.shortText,
+        optional: param.flags.isOptional || typeof param.defaultValue != 'undefined' || undefined,
+        default:
+          param.defaultValue ||
+          param.comment?.tags?.find((t) => t.tag == 'default')?.text ||
+          undefined,
+        type: param.type ? parseType(param.type) : undefined
+      }))
 
       return {
         ...baseReturn,

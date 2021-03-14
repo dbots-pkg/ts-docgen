@@ -4,6 +4,7 @@
   "description": "A TypeScript-enabled discord.js-like docs generator",
   "main": "lib/src/index.js",
   "types": "lib/src/index.d.ts",
+  "private": true,
   "scripts": {
     "build": "rm -r lib/* && tsc",
     "lint:fix": "eslint --ext .ts src --fix",

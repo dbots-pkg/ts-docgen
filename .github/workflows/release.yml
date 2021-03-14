@@ -1,0 +1,15 @@
+name: Release
+on:
+  release:
+    types: [published, edited]
+
+jobs:
+  tags:
+    name: Update tags
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: Actions-R-Us/actions-tagger@v2
+        with: 
+          publish_latest_tag: true
+        env: 
+          GITHUB_TOKEN: "${{ github.token }}"

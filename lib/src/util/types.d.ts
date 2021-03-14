@@ -8,7 +8,7 @@ declare function isIntrinsicType(value: any): value is JSONOutput.IntrinsicType;
 declare function isPredicateType(value: any): value is JSONOutput.PredicateType;
 declare function isReferenceType(value: any): value is JSONOutput.ReferenceType;
 declare function isReflectionType(value: any): value is JSONOutput.ReflectionType;
-declare function isStringLiteralType(value: any): value is JSONOutput.StringLiteralType;
+declare function isLiteralType(value: any): value is JSONOutput.LiteralType;
 declare function isTupleType(value: any): value is JSONOutput.TupleType;
 declare function isTypeOperatorType(value: any): value is JSONOutput.TypeOperatorType;
 declare function isTypeParameterType(value: any): value is JSONOutput.TypeParameterType;
@@ -24,7 +24,7 @@ export declare const typeUtil: {
     isPredicateType: typeof isPredicateType;
     isReferenceType: typeof isReferenceType;
     isReflectionType: typeof isReflectionType;
-    isStringLiteralType: typeof isStringLiteralType;
+    isLiteralType: typeof isLiteralType;
     isTupleType: typeof isTupleType;
     isTypeOperatorType: typeof isTypeOperatorType;
     isTypeParameterType: typeof isTypeParameterType;

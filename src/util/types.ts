@@ -29,8 +29,8 @@ function isReferenceType(value: any): value is JSONOutput.ReferenceType {
 function isReflectionType(value: any): value is JSONOutput.ReflectionType {
   return typeof value == 'object' && value.type == 'reflection'
 }
-function isStringLiteralType(value: any): value is JSONOutput.StringLiteralType {
-  return typeof value == 'object' && value.type == 'stringLiteral'
+function isLiteralType(value: any): value is JSONOutput.LiteralType {
+  return typeof value == 'object' && value.type == 'literal'
 }
 function isTupleType(value: any): value is JSONOutput.TupleType {
   return typeof value == 'object' && value.type == 'tuple'
@@ -66,7 +66,7 @@ export const typeUtil = {
   isPredicateType,
   isReferenceType,
   isReflectionType,
-  isStringLiteralType,
+  isLiteralType,
   isTupleType,
   isTypeOperatorType,
   isTypeParameterType,
@@ -111,7 +111,7 @@ export function parseTypeSimple(t: JSONOutput.SomeType): string {
     // This is run when we're parsing interface-like declaration
     if (children && children.length > 0) {
       for (const child of children) {
-        const { type } = child as DeclarationReflection
+        const { type } = child
         if (type) obj[child.name] = parseType(type)
       }
       return `{\n${Object.entries(obj)
@@ -121,10 +121,8 @@ export function parseTypeSimple(t: JSONOutput.SomeType): string {
 
     // This is run if we're parsing a function type
     if (signatures && signatures.length > 0) {
-      const s = signatures[0] as DeclarationReflection,
-        params = (s.parameters as DeclarationReflection[])?.map(
-          (p) => `${p.name}: ${p.type ? parseType(p.type) : 'unknown'}`
-        )
+      const s = signatures[0],
+        params = s.parameters?.map((p) => `${p.name}: ${p.type ? parseType(p.type) : 'unknown'}`)
       return `(${params?.join(', ') || '...args: unknown[]'}) => ${
         s.type ? parseType(s.type) : 'unknown'
       }`
@@ -132,7 +130,7 @@ export function parseTypeSimple(t: JSONOutput.SomeType): string {
 
     return '{}'
   }
-  if (isStringLiteralType(t)) {
+  if (isLiteralType(t)) {
     return `'${t.value}'`
   }
   if (isTupleType(t)) {

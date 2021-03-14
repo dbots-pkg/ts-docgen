@@ -1,6 +1,6 @@
 {
   "name": "ts-docgen",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "A TypeScript-enabled discord.js-like docs generator",
   "main": "lib/src/index.js",
   "types": "lib/src/index.d.ts",

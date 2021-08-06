@@ -6,8 +6,8 @@
   "types": "lib/src/index.d.ts",
   "private": true,
   "scripts": {
-    "build": "([ ! -d \"lib/\" ] || rm -r lib/*) && npx tsc",
-    "build:prepare": "[ -d \"lib/\" ] || npm run build",
+    "build": "npx rimraf lib && npx tsc",
+    "build:prepare": "npx shx test -d ./lib || npm run build",
     "lint:fix": "eslint --ext .ts src --fix",
     "prepare": "npx husky install && npm run build:prepare",
     "test": "npm run build && ts-node test/test"
